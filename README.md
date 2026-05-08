@@ -85,4 +85,4 @@ Questions or issues? Reach out to **api@draftyai.com**
 
 ## Website
 
-draftyai.com
+[DraftyAI.com](https://draftyai.com)
