@@ -82,3 +82,7 @@ POST /api/v1/rfe/generate
 ## Support
 
 Questions or issues? Reach out to **api@draftyai.com**
+
+## Website
+
+draftyai.com
