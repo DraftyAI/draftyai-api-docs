@@ -1,10 +1,12 @@
 # Test Kit
 
-Sample files for testing the DraftyAI RFE Response Builder API. Everything here is synthetic — no real personal information.
+Sample files for testing the DraftyAI API — all three products. Everything here is synthetic — no real personal information.
 
 ## How to use these files
 
 These files let you make real API calls without needing actual case documents. The example scripts in [examples/](../examples/) are pre-configured to use these files, so you can run them immediately after cloning the repo.
+
+The notice file is specific to the RFE Response Builder, but the **evidence PDFs work as inputs for every product** — send them as `evidence_files` to the RFE API, or as `documents` to the Drafting and Outlines APIs.
 
 You can also reference these files directly in your own `curl` commands:
 
@@ -66,6 +68,8 @@ This is the main document that the API analyzes. It contains several issues that
 
 When you send evidence files, the API creates labeled exhibits from them and cites them in the response draft. You can send all of them, some of them, or none.
 
+**These same evidence PDFs also work as drafting and outline inputs** — see the Drafting API test call below.
+
 ---
 
 ## Quick commands
@@ -110,13 +114,37 @@ curl -H "X-API-Key: YOUR_KEY_HERE" \
 
 Replace `{project_id}` and `{artifact_id}` with the actual values from your response.
 
+### Drafting API test call (uses the same evidence files)
+
+Generate a full EB-2 NIW support letter draft from the test evidence. This submits an async job — poll the returned `poll_url` every 30–60 seconds and budget 10–30 minutes (see the [Drafting Quickstart](../docs/DRAFTING_QUICKSTART.md)):
+
+```bash
+curl -X POST https://papi.draftyai.com/api/v1/drafting/generate \
+  -H "X-API-Key: YOUR_KEY_HERE" \
+  -F "document_type=eb2_niw" \
+  -F "documents=@test-kit/evidence/1_Employment_Role_Salary.pdf" \
+  -F "documents=@test-kit/evidence/2_Awards_Membership_Synthetic.pdf" \
+  -F "documents=@test-kit/evidence/3_Publications_Media_Synthetic.pdf" \
+  -F "documents=@test-kit/evidence/4_Judging_Contributions_Synthetic.pdf" \
+  -F "documents=@test-kit/evidence/A5_Beneficiary_Statement_Synthetic.pdf" \
+  -F "client_first_name=Karina" \
+  -F "client_last_name=Velasquez" \
+  -F "client_gender=Female" \
+  -F "matter_type=eb2_niw"
+```
+
+The same call against `/api/v1/outlines/generate` (drop `document_type`) produces a case-strategy outline in 1–4 minutes — a faster way to verify your key and documents before committing to a full draft.
+
 ---
 
 ## Using the example scripts instead
 
 For a more complete experience, use the ready-made scripts:
 
-- **Python:** `python examples/python_example.py` — handles both sync and async, plus DOCX download
-- **Bash:** `bash examples/bash_example.sh` — async mode with automatic polling and download
+- **RFE (Python):** `python examples/python_example.py` — handles both sync and async, plus DOCX download
+- **RFE (Bash):** `bash examples/bash_example.sh` — async mode with automatic polling and download
+- **Drafting (Python):** `python examples/drafting_example.py` — async job, live progress, exhibit list, DOCX download
+- **Drafting (Bash):** `bash examples/drafting_example.sh` — async mode with progress polling and download
+- **Outlines (Python):** `python examples/outline_example.py` — outline job, plus how to feed the outline into a draft
 
 See [examples/](../examples/) for details.
