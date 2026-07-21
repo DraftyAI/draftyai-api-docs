@@ -1,6 +1,8 @@
-# Quickstart Guide
+# RFE Response Builder — Quickstart
 
-A step-by-step walkthrough of your first API call. By the end, you'll have generated a real RFE response draft.
+A step-by-step walkthrough of your first RFE API call. By the end, you'll have generated a real RFE response draft.
+
+> This guide covers the **RFE Response Builder** product. For full legal drafts (briefs, motions, support letters) see the [Drafting Quickstart](DRAFTING_QUICKSTART.md); for case-strategy outlines see the [Full Flow Guide](FULL_FLOW_GUIDE.md).
 
 ## Before you begin
 
@@ -207,6 +209,7 @@ For a complete, ready-to-run script, see [examples/python_example.py](../example
 
 ## Next steps
 
+- [Drafting Quickstart](DRAFTING_QUICKSTART.md) — generate a full legal draft with an exhibit list
 - [API Reference](API_REFERENCE.md) — full technical documentation with every endpoint and field
 - [examples/](../examples/) — working Python and bash scripts to copy into your project
 - [test-kit/](../test-kit/) — details on the sample files and test client profile
