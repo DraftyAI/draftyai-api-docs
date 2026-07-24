@@ -85,11 +85,11 @@ Everything is stored durably — you can re-fetch JSON and re-download documents
 
 ## Complete runnable script
 
-The script below runs the whole flow against the test kit. Save it, set `DRAFTYAI_API_KEY`, and run it from the repo root:
+The whole flow is shipped as [examples/full_flow.py](../examples/full_flow.py) — the same script shown below. Set `DRAFTYAI_API_KEY` and run it from the repo root:
 
 ```bash
 export DRAFTYAI_API_KEY=dfy_live_...
-python full_flow.py
+python examples/full_flow.py
 ```
 
 ```python

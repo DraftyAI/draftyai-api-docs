@@ -263,6 +263,8 @@ while True:
 
 For advanced integrations that need control over individual steps. All endpoints use the same `X-API-Key` authentication.
 
+> **Trailing slashes:** these collection paths are matched with a trailing slash. A request to the bare path (e.g. `GET /clients`) returns a `307` redirect to `/clients/`. Send the trailing slash, or follow redirects with `curl -L` — but note that some HTTP clients drop the `X-API-Key` header across a redirect, so sending the exact `/clients/` path is safest.
+
 ### Clients
 
 | Method | Path | Description |
@@ -517,7 +519,7 @@ Document types you can pass as `document_type`:
 ```json
 {
   "document_types": [
-    {"key": "eb2_niw", "display_name": "EB-2 NIW Petition Support Letter", "category": "..."}
+    {"key": "eb2_niw", "display_name": "EB-2 National Interest Waiver Petition", "category": "PetitionSupport"}
   ],
   "note": "document_type also accepts free-form labels (e.g. 'Motion to Continue', 'Cover Letter') — the API plans a tailored structure."
 }
@@ -530,7 +532,7 @@ Any value not in this catalog is treated as a free-form label and drafted from a
 Canonical matter types for the `matter_type` field (free text is also accepted — it's classified automatically):
 
 ```json
-{"matter_types": [{"id": "eb2_niw", "label": "EB-2 National Interest Waiver"}]}
+{"matter_types": [{"id": "eb2_niw", "label": "EB-2 National Interest Waiver", "display_name": "EB-2 National Interest Waiver"}]}
 ```
 
 ### `GET /api/v1/drafting/venues`
@@ -554,7 +556,7 @@ Every draft generated with `include_exhibit_list=true` (the default) gets an exh
 
 The intended lifecycle: **review → edit/reorder → approve → reconcile → export → download**.
 
-All exhibit endpoints require the draft to be linked to a matter (drafts from this API always are) and return the full serialized exhibit list unless noted. The full list shape includes more detail than the generate response's summary: each exhibit carries `id`, `label` (server-derived from position — excluded items show `"—"`), `title`, `description`, `page_start`, `page_end`, `source_document_id`, `letter_override`, `excluded`, `is_manual`; the list carries `id`, `case_id`, `draft_id`, `title`, `label_scheme`, `style_instructions`, `status` (`draft` or `approved`), `approved_at`, `created_at`, `updated_at`.
+All exhibit endpoints require the draft to be linked to a matter (drafts from this API always are) and return the full serialized exhibit list unless noted. The full list shape includes more detail than the generate response's summary: each exhibit carries `id`, `label` (server-derived from position — excluded items show `"—"`), `title`, `description`, `page_start`, `page_end`, `source_document_id`, `letter_override`, `excluded`, `is_manual`; the list carries `id`, `case_id`, `draft_id`, `title`, `label_scheme`, `style_instructions`, `status` (`draft` or `approved`), `approved_at`, `created_at`, `updated_at`. Auto-built exhibits come back with `page_start`/`page_end` as `null` — page ranges are the attorney's to assign during review (via `PATCH`), not inferred automatically.
 
 ### `GET /api/v1/drafting/{draft_id}/exhibits`
 

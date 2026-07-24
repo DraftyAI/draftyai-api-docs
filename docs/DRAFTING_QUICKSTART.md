@@ -9,7 +9,7 @@ A step-by-step walkthrough of your first Drafting API call. By the end, you'll h
 You need:
 
 - [ ] Your **API key** (shared via 1Password, starts with `dfy_live_`), authorized for the Drafting API — the Drafting and Outlines APIs are available to authorized partners; contact **api@draftyai.com** if your key isn't enabled yet
-- [ ] **curl** installed (comes pre-installed on Mac and Linux; [download for Windows](https://curl.se/windows/))
+- [ ] **curl** installed (comes pre-installed on Mac and Linux; [download for Windows](https://curl.se/windows/)) — **Windows/PowerShell:** call `curl.exe` explicitly (in PowerShell, `curl` is an alias for `Invoke-WebRequest` and rejects these flags) and use `-o NUL` instead of `-o /dev/null`. WSL2 or the Python examples avoid this entirely.
 - [ ] This repo cloned locally (`git clone git@github.com:DraftyAI/draftyai-api-docs.git`)
 
 Optional but helpful:
@@ -221,7 +221,7 @@ Replace `4211` with your `draft_id`. You can re-download at any time — the doc
 
 The draft came with an exhibit list in `"draft"` status. The intended flow is: **review → edit → approve → reconcile → export**.
 
-**1. Review it** (returns the full list with page ranges and source documents):
+**1. Review it** (returns the full list with source documents; `page_start`/`page_end` are unset on auto-built exhibits — you assign page ranges during review):
 
 ```bash
 curl -H "X-API-Key: YOUR_KEY_HERE" \
