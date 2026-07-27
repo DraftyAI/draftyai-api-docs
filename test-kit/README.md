@@ -43,6 +43,8 @@ Use these values for the `client_*` fields in your API requests:
 | Receipt number | 2591234567 |
 | Case type | I-140 EB-1A (Extraordinary Ability) |
 
+> **Note:** the evidence PDFs are benefit-type-agnostic. The Drafting and Outlines examples in this repo demonstrate an **EB-2 NIW** (`eb2_niw`) petition support letter, but the same files work for any `document_type` — including `eb1a_petition`, which matches this client's actual EB-1A case. Choose the `document_type`/`matter_type` that fits your matter.
+
 ---
 
 ## Files
