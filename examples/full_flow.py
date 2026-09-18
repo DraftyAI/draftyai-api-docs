@@ -32,6 +32,7 @@ CLIENT = {
 }
 MATTER_TYPE = "eb2_niw"
 DOCUMENT_TYPE = "eb2_niw"
+VENUE = "uscis"  # REQUIRED on every generate: where THIS document is filed
 
 # Generous polling budgets. Outlines run 1-4 minutes; drafts run 10-30+.
 OUTLINE_POLL_SECONDS = 15
@@ -121,6 +122,7 @@ def main():
             "client_id": client_id,
             "case_id": case_id,
             "outline_run_id": outline_run_id,
+            "venue": VENUE,
         },
         timeout=120,
     )

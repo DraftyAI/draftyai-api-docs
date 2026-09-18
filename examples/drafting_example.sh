@@ -35,6 +35,7 @@ CLIENT_FIRST_NAME="Karina"
 CLIENT_LAST_NAME="Velasquez"
 CLIENT_GENDER="Female"
 MATTER_TYPE="eb2_niw"
+VENUE="uscis"             # REQUIRED: where THIS document is filed (GET /api/v1/drafting/venues)
 
 POLL_SECONDS=45           # drafts run 10-30+ minutes — poll gently
 
@@ -99,7 +100,8 @@ SUBMIT_RESPONSE=$(eval curl -s -X POST \
     -F "\"client_first_name=$CLIENT_FIRST_NAME\"" \
     -F "\"client_last_name=$CLIENT_LAST_NAME\"" \
     -F "\"client_gender=$CLIENT_GENDER\"" \
-    -F "\"matter_type=$MATTER_TYPE\"")
+    -F "\"matter_type=$MATTER_TYPE\"" \
+    -F "\"venue=$VENUE\"")
 
 # Check for errors
 if echo "$SUBMIT_RESPONSE" | $JQ -e '.job_id' > /dev/null 2>&1; then
