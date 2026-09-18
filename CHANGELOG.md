@@ -2,6 +2,13 @@
 
 Notable changes to the DraftyAI Partner API and this documentation.
 
+## 2026-09-17 — Drafting API: `venue` is now required (breaking)
+
+- `POST /api/v1/drafting/generate` now **requires** the `venue` form field on every request. Requests without it (or with a blank/unknown ID) return `422` whose `detail` lists the valid IDs. Previously the field was optional and venue-less drafts were formatted for USCIS — which mis-captioned Immigration Court and BIA filings.
+- The filing venue belongs to the **document**, not the matter: it is never inferred from a `case_id`, and the same matter may be drafted for `uscis`, then `eoir`, then `bia` over time. Ask the attorney where *this* document is being filed and pass that ID.
+- `GET /api/v1/drafting/venues` now returns `{id, label, display_name, kind}` and adds `cbp`, `consular`, `district_baseline`, `circuit_baseline`; `scotus` is no longer accepted. IDs are case-insensitive.
+- **Migration:** add `-F "venue=..."` to every generate call (see the updated quickstart and examples).
+
 ## 2026-07-14 — Drafting API + Outlines API
 
 The API grows from one product to three. The **Drafting API** and **Outlines API** launch in beta for authorized partners; the RFE Response Builder API is unchanged.

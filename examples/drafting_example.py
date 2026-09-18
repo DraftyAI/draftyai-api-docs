@@ -41,6 +41,7 @@ CLIENT_FIRST_NAME = "Karina"
 CLIENT_LAST_NAME = "Velasquez"
 CLIENT_GENDER = "Female"
 MATTER_TYPE = "eb2_niw"
+VENUE = "uscis"  # REQUIRED: where THIS document is filed (GET /api/v1/drafting/venues)
 
 # Optional free-form drafting instructions (tone, emphasis, points to include)
 INSTRUCTIONS = None
@@ -76,6 +77,7 @@ def submit_job():
         "client_last_name": CLIENT_LAST_NAME,
         "client_gender": CLIENT_GENDER,
         "matter_type": MATTER_TYPE,
+        "venue": VENUE,
         "outline_mode": OUTLINE_MODE,
     }
     if INSTRUCTIONS:

@@ -364,7 +364,7 @@ One call to generate a complete draft.
 | `client_background` | No | String | — | Background summary of the client/case; feeds planning and drafting |
 | `case_id` | One of ‡ | Integer | — | An existing matter's ID. Must belong to the resolved client (otherwise `400`) |
 | `matter_type` | One of ‡ | String | — | With no `case_id`, creates a matter. An ID from [`/matter-types`](#get-apiv1draftingmatter-types), or free text (classified automatically) |
-| `venue` | No | String | — | Filing venue ID from [`/venues`](#get-apiv1draftingvenues) (e.g. `"eoir"`, `"ca9"`) |
+| `venue` | **Yes** | String | — | Filing venue of **this document** — an ID from [`/venues`](#get-apiv1draftingvenues) (e.g. `"eoir"`, `"ca9"`). Case-insensitive. Missing, blank, or unknown → `422` listing the valid IDs. It is never inferred from the matter: the same matter can be filed with USCIS, the Immigration Court, or the BIA over time, and a wrong venue silently produces a wrongly-captioned filing |
 | `jurisdiction` | No | String | — | Controlling circuit for legal authority (e.g. `"CA9"`) |
 | `instructions` | No | String | — | Free-form drafting instructions (tone, emphasis, points to include) |
 | `outline_mode` | No | String | `"auto"` | `auto` \| `full` \| `none` — see [Outline modes](#outline-modes) |
@@ -537,18 +537,23 @@ Canonical matter types for the `matter_type` field (free text is also accepted �
 
 ### `GET /api/v1/drafting/venues`
 
-Filing venues for the `venue` field:
+Filing venues for the (required) `venue` field. Response shape: `{"venues": [{"id", "label", "display_name", "kind"}]}` (`display_name` mirrors `label`; `kind` is `agency`, `trial_court`, `appellate`, or `district_court`).
 
-| `id` | Venue |
-|---|---|
-| `uscis` | USCIS (agency filing) |
-| `uscis_asylum_office` | USCIS Asylum Office |
-| `aao` | USCIS Administrative Appeals Office |
-| `eoir` | EOIR Immigration Court |
-| `bia` | Board of Immigration Appeals |
-| `ca1` … `ca11` | U.S. Courts of Appeals, First through Eleventh Circuits |
-| `cadc` | U.S. Court of Appeals, D.C. Circuit |
-| `scotus` | Supreme Court of the United States |
+| `id` | Venue | `kind` |
+|---|---|---|
+| `uscis` | USCIS (Service Center) | agency |
+| `uscis_asylum_office` | USCIS Asylum Office | agency |
+| `aao` | USCIS Administrative Appeals Office (AAO) | agency |
+| `cbp` | CBP (Port of Entry) | agency |
+| `consular` | U.S. Consulate (Department of State) | agency |
+| `eoir` | Immigration Court (EOIR) | trial_court |
+| `bia` | Board of Immigration Appeals (BIA) | appellate |
+| `district_baseline` | U.S. District Court (baseline) | district_court |
+| `circuit_baseline` | U.S. Court of Appeals (FRAP baseline) | appellate |
+| `ca1` … `ca11` | U.S. Courts of Appeals, First through Eleventh Circuits | appellate |
+| `cadc` | U.S. Court of Appeals for the D.C. Circuit | appellate |
+
+Only IDs returned by this endpoint are accepted by `/generate`. Rule of thumb: affirmative petitions, applications, and RFE/NOID responses → `uscis`; removal-proceedings filings (including motions before an Immigration Judge) → `eoir`; appeals of IJ decisions and motions before the Board → `bia`; I-290B appeals → `aao`; petitions for review → the specific circuit (`ca9`) or `circuit_baseline`.
 
 ## Exhibit endpoints
 

@@ -132,7 +132,8 @@ curl -X POST https://papi.draftyai.com/api/v1/drafting/generate \
   -F "client_first_name=Karina" \
   -F "client_last_name=Velasquez" \
   -F "client_gender=Female" \
-  -F "matter_type=eb2_niw"
+  -F "matter_type=eb2_niw" \
+  -F "venue=uscis"
 ```
 
 The same call against `/api/v1/outlines/generate` (drop `document_type`) produces a case-strategy outline in 1–4 minutes — a faster way to verify your key and documents before committing to a full draft.

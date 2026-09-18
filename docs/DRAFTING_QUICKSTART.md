@@ -55,7 +55,8 @@ curl -X POST https://papi.draftyai.com/api/v1/drafting/generate \
   -F "client_first_name=Karina" \
   -F "client_last_name=Velasquez" \
   -F "client_gender=Female" \
-  -F "matter_type=eb2_niw"
+  -F "matter_type=eb2_niw" \
+  -F "venue=uscis"
 ```
 
 **What each flag means:**
@@ -66,6 +67,7 @@ curl -X POST https://papi.draftyai.com/api/v1/drafting/generate \
 | `-F "documents=@..."` | Case documents to draft from. Repeat the field for multiple files (PDF, DOCX, DOC, TXT, MD, RTF; max 64 MB each) |
 | `-F "client_first_name=..."` etc. | Creates a client record. If you already have one, pass `client_id` instead |
 | `-F "matter_type=..."` | The kind of matter. Use an ID from [`GET /api/v1/drafting/matter-types`](API_REFERENCE.md#get-apiv1draftingmatter-types) or free text (it's classified automatically). If you already have a matter, pass `case_id` instead |
+| `-F "venue=..."` | **Required.** Where *this document* is being filed — an ID from [`GET /api/v1/drafting/venues`](API_REFERENCE.md#get-apiv1draftingvenues) (`uscis`, `eoir`, `bia`, `aao`, `ca9`, ...). Sent on every request; never inferred from the matter. Missing or unknown → `422` listing the valid IDs |
 
 The response comes back **immediately** — it's a job ticket, not the draft:
 
@@ -314,6 +316,7 @@ resp = requests.post(
         "client_last_name": "Velasquez",
         "client_gender": "Female",
         "matter_type": "eb2_niw",
+        "venue": "uscis",  # required: where THIS document is filed
     },
     timeout=120,
 )
